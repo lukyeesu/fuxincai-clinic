@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ฟู่ซินไฉคลินิกแพทย์แผนจีน - ระบบบริหารจัดการ</title>
+    <title>ฟู่ ซิน ไฉ คลินิกแพทย์แผนจีน - ระบบบริหารจัดการ</title>
     <style>
         body, html {
             margin: 0;
@@ -20,12 +20,20 @@
             border: none;
         }
     </style>
+    <script>
+        // ฟังก์ชันรอรับข้อความจาก Iframe (GAS) เพื่อเปลี่ยน Title
+        window.addEventListener('message', function(e) {
+            // ตรวจสอบว่ามีข้อมูลส่งมาและเป็นคำสั่ง setTitle หรือไม่
+            if (e.data && e.data.type === 'setTitle') {
+                document.title = e.data.title;
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- 
-      นำ URL Web App ที่ Deploy เสร็จแล้วมาใส่ใน src ด้านล่างนี้ 
-      (ต้องลงท้ายด้วย /exec)
+      ใส่ URL Web App ของ GAS ที่คุณระบุมา
     -->
-    <iframe src="วาง_URL_WEB_APP_ของ_GAS_ที่นี่" allow="geolocation; microphone; camera"></iframe>
+    <iframe src="https://script.google.com/macros/s/AKfycbxq1xusS5ntNc60QpPUeYz4D-wu0KiaZx5khaV-c32mmEkpaY5T2EB_3m4zyxv5jhgM/exec" allow="geolocation; microphone; camera"></iframe>
 </body>
 </html>
