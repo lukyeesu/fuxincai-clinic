@@ -21,11 +21,21 @@
         }
     </style>
     <script>
-        // ฟังก์ชันรอรับข้อความจาก Iframe (GAS) เพื่อเปลี่ยน Title
+        // ฟังก์ชันรอรับข้อความจาก Iframe (GAS) เพื่อเปลี่ยน Title หรือ Logout
         window.addEventListener('message', function(e) {
-            // ตรวจสอบว่ามีข้อมูลส่งมาและเป็นคำสั่ง setTitle หรือไม่
+            // 1. เปลี่ยน Title
             if (e.data && e.data.type === 'setTitle') {
                 document.title = e.data.title;
+            }
+            
+            // 2. สั่ง Logout (เพิ่มส่วนนี้)
+            if (e.data && e.data.type === 'logout') {
+                var iframe = document.querySelector('iframe');
+                if (iframe) {
+                    // ดึง URL เดิมมาตัด Parameter ออก แล้วเติม ?page=login พร้อม timestamp กัน Cache
+                    var baseUrl = iframe.src.split('?')[0];
+                    iframe.src = baseUrl + '?page=login&t=' + new Date().getTime();
+                }
             }
         });
     </script>
