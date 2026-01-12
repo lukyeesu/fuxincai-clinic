@@ -23,18 +23,28 @@
     <script>
         // ฟังก์ชันรอรับข้อความจาก Iframe (GAS) เพื่อเปลี่ยน Title หรือ Logout
         window.addEventListener('message', function(e) {
+            // ตรวจสอบว่ามีข้อมูลส่งมาหรือไม่
+            var data = e.data || {};
+
             // 1. เปลี่ยน Title
-            if (e.data && e.data.type === 'setTitle') {
-                document.title = e.data.title;
+            if (data.type === 'setTitle' && data.title) {
+                document.title = data.title;
             }
             
-            // 2. สั่ง Logout (เพิ่มส่วนนี้)
-            if (e.data && e.data.type === 'logout') {
+            // 2. สั่ง Logout
+            if (data.type === 'logout') {
                 var iframe = document.querySelector('iframe');
                 if (iframe) {
-                    // ดึง URL เดิมมาตัด Parameter ออก แล้วเติม ?page=login พร้อม timestamp กัน Cache
-                    var baseUrl = iframe.src.split('?')[0];
-                    iframe.src = baseUrl + '?page=login&t=' + new Date().getTime();
+                    console.log("Logout command received. Reloading iframe...");
+                    // ดึง URL เดิมมาตัด Parameter ออก
+                    var currentSrc = iframe.src;
+                    var baseUrl = currentSrc.split('?')[0];
+                    
+                    // บังคับโหลดใหม่ไปหน้า login พร้อม timestamp ป้องกัน Cache
+                    var newUrl = baseUrl + '?page=login&t=' + new Date().getTime();
+                    
+                    // สั่งเปลี่ยน URL
+                    iframe.src = newUrl;
                 }
             }
         });
